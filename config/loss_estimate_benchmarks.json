@@ -1,0 +1,81 @@
+{
+  "benchmarks_id": "loss_estimate_benchmarks_v1",
+  "version": "1.1.0",
+  "price_basis_year": 2023,
+  "status_note": "Declared screening benchmarks for the Talaix loss-screening ESTIMATE function (docs/ECONOMIC_INTELLIGENCE.md §9). Every value is a declared range with a stated basis — these are NOT valuations and NOT calibrated model parameters. The bands reflect the ~2023 price context (price_basis_year) and are dated at query time by the official Eurostat construction-cost index (STS_COPI_A) — the index scales all bands equally, it never narrows them. Floor-area assumptions are replaced by real cadastral means where a cadastre is integrated (docs/LOSS_DATA_ACQUISITION.md §2).",
+  "unit_conventions": {
+    "replacement_cost_per_m2": "EUR per m2 of building floor area (2025 price context, declared screening range)",
+    "floor_area_per_building_m2": "m2 of floor area per mapped OSM building (declared assumption — OSM building counts carry no floor areas)"
+  },
+  "defaults": {
+    "replacement_cost_per_m2": {
+      "low": 900,
+      "central": 1400,
+      "high": 2200,
+      "basis": "Published European residential reconstruction-cost ranges (Eurostat construction-cost index context and insurance valuation practice); generic screening range used when no country benchmark matches."
+    },
+    "floor_area_per_building_m2": {
+      "low": 80,
+      "central": 120,
+      "high": 200,
+      "basis": "Declared assumption for a generic mapped building (mix of dwellings, outbuildings and small commercial units). The range is deliberately wide — the estimate reports its own sensitivity instead of pretending precision."
+    }
+  },
+  "countries": [
+    {
+      "code": "LU", "name": "Luxembourg", "bbox": [5.736, 49.448, 6.531, 50.183],
+      "replacement_cost_per_m2": {"low": 1500, "central": 2200, "high": 3200,
+        "basis": "Luxembourg construction costs rank among the highest in the EU (Eurostat construction-cost context; national statistical publications); declared screening range."}
+    },
+    {
+      "code": "DE", "name": "Germany", "bbox": [5.866, 47.27, 15.042, 55.058],
+      "replacement_cost_per_m2": {"low": 1200, "central": 1800, "high": 2600,
+        "basis": "German residential reconstruction-cost ranges from published construction-cost and insurance-valuation sources; declared screening range."}
+    },
+    {
+      "code": "FR", "name": "France (metropolitan)", "bbox": [-5.142, 41.333, 9.663, 51.089],
+      "replacement_cost_per_m2": {"low": 1100, "central": 1600, "high": 2400,
+        "basis": "French residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "BE", "name": "Belgium", "bbox": [2.545, 49.497, 6.408, 51.505],
+      "replacement_cost_per_m2": {"low": 1100, "central": 1600, "high": 2300,
+        "basis": "Belgian residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "NL", "name": "Netherlands", "bbox": [3.358, 50.75, 7.227, 53.555],
+      "replacement_cost_per_m2": {"low": 1200, "central": 1700, "high": 2500,
+        "basis": "Dutch residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "AT", "name": "Austria", "bbox": [9.531, 46.372, 17.161, 49.021],
+      "replacement_cost_per_m2": {"low": 1200, "central": 1700, "high": 2400,
+        "basis": "Austrian residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "CH", "name": "Switzerland", "bbox": [5.956, 45.818, 10.492, 47.808],
+      "replacement_cost_per_m2": {"low": 1600, "central": 2300, "high": 3300,
+        "basis": "Swiss construction costs rank at the top of European ranges (published construction-cost indices); declared screening range in EUR equivalents."}
+    },
+    {
+      "code": "ES", "name": "Spain", "bbox": [-9.3, 35.9, 3.33, 43.8],
+      "replacement_cost_per_m2": {"low": 800, "central": 1200, "high": 1800,
+        "basis": "Spanish residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "PT", "name": "Portugal", "bbox": [-9.53, 36.84, -6.19, 42.15],
+      "replacement_cost_per_m2": {"low": 700, "central": 1000, "high": 1500,
+        "basis": "Portuguese residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "IT", "name": "Italy", "bbox": [6.62, 36.62, 18.52, 47.09],
+      "replacement_cost_per_m2": {"low": 900, "central": 1300, "high": 2000,
+        "basis": "Italian residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    },
+    {
+      "code": "GR", "name": "Greece", "bbox": [19.374, 34.802, 29.649, 41.749],
+      "replacement_cost_per_m2": {"low": 700, "central": 1000, "high": 1500,
+        "basis": "Greek residential reconstruction-cost ranges from published construction-cost sources; declared screening range."}
+    }
+  ]
+}

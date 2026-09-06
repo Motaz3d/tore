@@ -1,0 +1,70 @@
+[build-system]
+requires = ["setuptools>=68", "wheel"]
+build-backend = "setuptools.build_meta"
+
+[project]
+name = "tore"
+version = "0.1.0"
+description = "Talaix Open Risk Engine — open, reproducible multi-hazard climate-risk indicators from open Earth-observation data."
+readme = "README.md"
+requires-python = ">=3.10"
+license = { text = "EUPL-1.2" }
+authors = [
+    { name = "Talaix Earth Systems", email = "info@talaix.com" },
+]
+keywords = ["climate-risk", "multi-hazard", "earth-observation", "copernicus", "wildfire", "flood", "drought"]
+classifiers = [
+    "Development Status :: 3 - Alpha",
+    "Intended Audience :: Science/Research",
+    "License :: OSI Approved :: European Union Public Licence 1.2 (EUPL 1.2)",
+    "Programming Language :: Python :: 3",
+    "Programming Language :: Python :: 3.10",
+    "Programming Language :: Python :: 3.11",
+    "Programming Language :: Python :: 3.12",
+    "Topic :: Scientific/Engineering :: GIS",
+]
+
+# Core runtime dependencies — the versions verified against the platform
+# test suite are numpy 2.5.2 / scikit-learn 1.9.0 / pandas 3.0.5; floors are
+# set lower so the engine installs alongside older scientific stacks.
+dependencies = [
+    "numpy>=1.26",
+    "pandas>=2.0",
+    "scikit-learn>=1.4",
+]
+
+[project.optional-dependencies]
+# Heavy Earth-Observation reads (STAC/COG) used by the data-ingestion path,
+# plus Pillow for satellite scene rendering (all imported lazily).
+gis = [
+    "rasterio>=1.3",
+    "pystac-client>=0.8",
+    "pyproj>=3.5",
+    "Pillow>=10.0",
+]
+# ML risk models (src.prediction).
+ml = [
+    "xgboost>=1.7",
+    "joblib>=1.3",
+]
+dev = [
+    "pytest>=8.0",
+]
+
+[project.urls]
+Homepage = "https://talaix.com"
+Repository = "https://github.com/Motaz3d/tore"
+Issues = "https://github.com/Motaz3d/tore/issues"
+
+# The top-level importable packages are `tx_core` and `src` (climate /
+# prediction / gis_mapping), mirroring the platform monorepo layout.
+[tool.setuptools.packages.find]
+where = ["."]
+include = ["src*", "tx_core*"]
+
+[project.scripts]
+# TX engine CLI — `tx analyze --lat .. --lon ..` (python -m tx_core works too).
+tx = "tx_core.cli:main"
+
+[tool.pytest.ini_options]
+testpaths = ["tests"]

@@ -1,0 +1,262 @@
+{
+  "registry_id": "loss_data_registry_v2",
+  "version": "2.0.0",
+  "description": "Registry of documented disaster-loss data sources (candidates, integrations and planned) for Talaix. Tracks which loss datasets are reviewed or integrated, their access conditions and their integration status. No loss figures are stored here unless a source is integrated with a stated method and licence; figures from the live NOAA integration are computed at query time.",
+  "separation_note": "Observed, estimated, modelled and projected loss figures are strictly separated categories. A figure may appear only in the category its source documents, with the source's method stated; categories are never merged into a single number.",
+  "no_figures_note": "Observed loss figures are served from three honest paths: (1) the integrated live NOAA NCEI source (US-only national aggregates computed at query time); (2) curated observed_events below — a hand-maintained set of well-documented disaster events whose figures are published by official/primary sources, each carrying source, method, licence and limitations; (3) operator-provided staged export files (EM-DAT, DesInventar) parsed from data/emdat_export.csv and data/desinventar_exports/ when present.",
+  "sources": [
+    {
+      "id": "emdat",
+      "name": "EM-DAT International Disaster Database",
+      "provider": "Centre for Research on the Epidemiology of Disasters (CRED), UCLouvain",
+      "url": "https://public.emdat.be/",
+      "access": "registration_required",
+      "license_note": "Free for non-commercial research use after registration; redistribution restricted — check EM-DAT terms before integration.",
+      "coverage": "Global disaster events with documented human and economic loss figures",
+      "temporal_coverage": "1900 to present (event-based)",
+      "granularity": "event level, country attribution",
+      "status": "candidate",
+      "status_note": "Staged-ingest path: operator downloads an export from https://public.emdat.be after registration and saves it as data/emdat_export.csv. The parser reads documented deaths and event counts when present; no live API integration because the public GraphQL endpoint requires authenticated queries and EM-DAT terms restrict redistribution. Not integrated live (2026-09-02)."
+    },
+    {
+      "id": "desinventar",
+      "name": "DesInventar national disaster loss databases",
+      "provider": "UNDRR (United Nations Office for Disaster Risk Reduction)",
+      "url": "https://www.desinventar.org/",
+      "access": "download",
+      "license_note": "Open access downloads of national loss databases; per-country data maintained by national authorities — verify per-country terms.",
+      "coverage": "National and sub-national disaster loss inventories (variable country coverage)",
+      "temporal_coverage": "Varies by country; multi-decadal for several national databases",
+      "granularity": "event level, sub-national (municipal/provincial) for many countries",
+      "status": "candidate",
+      "status_note": "Staged-ingest path: operator downloads per-country CSV exports and saves them in data/desinventar_exports/. The parser reads record counts and any documented loss columns. No discoverable unauthenticated machine endpoint; not integrated live (2026-09-02)."
+    },
+    {
+      "id": "undrr",
+      "name": "UNDRR disaster risk reduction knowledge base",
+      "provider": "UNDRR (United Nations Office for Disaster Risk Reduction)",
+      "url": "https://www.undrr.org/",
+      "access": "download",
+      "license_note": "Publications and statistics openly published; check per-dataset terms.",
+      "coverage": "Global DRR statistics, reports and loss-related publications (incl. GAR reports)",
+      "temporal_coverage": "Report series, irregular",
+      "granularity": "aggregated statistics and reports, not event-level records",
+      "status": "candidate",
+      "status_note": "URL verified reachable (HTTP 200, 2026-08-17). Entry point to DesInventar and GAR loss analyses; not integrated."
+    },
+    {
+      "id": "worldbank_data",
+      "name": "World Bank Open Data",
+      "provider": "World Bank",
+      "url": "https://data.worldbank.org/",
+      "access": "api",
+      "license_note": "Open data under CC-BY-4.0 for most indicators; attribution required.",
+      "coverage": "Global development indicators incl. disaster-related economic indicators",
+      "temporal_coverage": "1960 to present (annual indicators)",
+      "granularity": "country level, annual",
+      "status": "candidate",
+      "status_note": "URL verified reachable (HTTP 200, 2026-08-17). Relevant disaster-loss indicators not yet selected; not integrated."
+    },
+    {
+      "id": "gfdrr",
+      "name": "GFDRR (Global Facility for Disaster Reduction and Recovery)",
+      "provider": "World Bank / GFDRR",
+      "url": "https://www.gfdrr.org/",
+      "access": "download",
+      "license_note": "Publications and tools openly published; check per-resource terms.",
+      "coverage": "Disaster risk assessments, post-disaster needs assessments (PDNA/DaLA) and risk-finance resources",
+      "temporal_coverage": "Report series, irregular",
+      "granularity": "assessment reports and country profiles, not a unified event-loss database",
+      "status": "candidate",
+      "status_note": "URL verified reachable; returns HTTP 403 to scripted clients (bot protection) — domain confirmed live (2026-08-17). Not integrated."
+    },
+    {
+      "id": "noaa_billions",
+      "name": "NOAA Billion-Dollar Weather and Climate Disasters",
+      "provider": "NOAA National Centers for Environmental Information (NCEI)",
+      "url": "https://www.ncei.noaa.gov/access/billions/",
+      "api_or_download_url": "https://services3.arcgis.com/0Fs3HcaFfvzXvm7w/arcgis/rest/services/USA_Billion_Dollar_Disasters_view/FeatureServer",
+      "access": "api",
+      "license_note": "US government public data; cite NOAA NCEI as source.",
+      "coverage": "United States only — weather and climate disasters with losses >= 1 billion USD (CPI-adjusted)",
+      "temporal_coverage": "1980 to 2021 (state-level costs and event counts)",
+      "granularity": "event level aggregated to state-level costs/event counts",
+      "status": "integrated",
+      "status_note": "Integrated 2026-09-02 via public ArcGIS REST query of USA_Billion_Dollar_Disasters_view (layer 0 state costs, layer 1 state frequency). US-only national totals are computed by Talaix as sums across states; multi-state events may be summed across affected states. Must never be presented as global."
+    },
+    {
+      "id": "munichre_natcat",
+      "name": "Munich Re NatCatSERVICE",
+      "provider": "Munich Re",
+      "url": "https://www.munichre.com/",
+      "access": "registration_required",
+      "license_note": "Commercial licence; figures quoted in Munich Re publications are copyrighted — do not redistribute without licence.",
+      "coverage": "Global natural-catastrophe loss database (insured and overall losses)",
+      "temporal_coverage": "1980 to present (event-based)",
+      "granularity": "event level, country attribution",
+      "status": "planned",
+      "status_note": "Commercial licence to be procured after first platform revenue (operator decision 2026-09-02)."
+    },
+    {
+      "id": "swissre_sigma",
+      "name": "Swiss Re sigma",
+      "provider": "Swiss Re Institute",
+      "url": "https://www.swissre.com/",
+      "access": "registration_required",
+      "license_note": "sigma reports publicly downloadable after registration; underlying catastrophe database commercial — verify terms.",
+      "coverage": "Global natural-catastrophe and man-made loss statistics (insured and overall losses)",
+      "temporal_coverage": "1970 to present (annual sigma reports)",
+      "granularity": "event level within reports; annual aggregates",
+      "status": "planned",
+      "status_note": "Commercial licence to be procured after first platform revenue (operator decision 2026-09-02)."
+    }
+  ],
+  "observed_events": [
+    {
+      "id": "eu_floods_2021_07",
+      "name": "July 2021 Western and Central European floods (low-pressure system Bernd)",
+      "hazard": "flood",
+      "reference_period": "2021-07-13 to 2021-07-19",
+      "affected_areas": [
+        {"label": "Germany", "bbox": [5.866, 47.27, 15.042, 55.058]},
+        {"label": "Belgium", "bbox": [2.545, 49.497, 6.408, 51.505]},
+        {"label": "Netherlands", "bbox": [3.358, 50.75, 7.227, 53.555]},
+        {"label": "Luxembourg", "bbox": [5.736, 49.448, 6.531, 50.183]},
+        {"label": "France (metropolitan)", "bbox": [-5.142, 41.333, 9.663, 51.089]},
+        {"label": "Switzerland", "bbox": [5.956, 45.818, 10.492, 47.808]},
+        {"label": "Austria", "bbox": [9.531, 46.372, 17.161, 49.021]}
+      ],
+      "figures": [
+        {
+          "label": "Overall economic losses (Europe)",
+          "value": 33,
+          "unit": "billion EUR (2021 values, published rounded figure)",
+          "claim_status": "DOCUMENTED",
+          "source": "munich_re_review",
+          "reference_period": "July 2021",
+          "geographic_scope": "Western and Central Europe (multi-country aggregate)",
+          "licence_note": "Published headline figure from Munich Re's public annual natural-disaster review; cite Munich Re when quoting.",
+          "provider_url": "https://www.munichre.com/",
+          "method": "Published aggregate from Munich Re's public 2021 natural-disasters review (NatCatSERVICE-based); the July 2021 flood was named the costliest natural disaster in Europe to date.",
+          "limitations": "Multi-country aggregate; not allocatable to a region, municipality or asset. Rounded published value."
+        },
+        {
+          "label": "Insured losses (Europe)",
+          "value": 11,
+          "unit": "billion EUR (2021 values, published rounded figure)",
+          "claim_status": "DOCUMENTED",
+          "source": "munich_re_review",
+          "reference_period": "July 2021",
+          "geographic_scope": "Western and Central Europe (multi-country aggregate)",
+          "licence_note": "Published headline figure from Munich Re's public annual natural-disaster review; cite Munich Re when quoting.",
+          "provider_url": "https://www.munichre.com/",
+          "method": "Published insured-loss aggregate from Munich Re's public 2021 natural-disasters review for the July 2021 flood event.",
+          "limitations": "Multi-country insured aggregate; protection gap differs by country; not allocatable below Europe level."
+        },
+        {
+          "label": "Insured losses (Germany)",
+          "value": 8.2,
+          "unit": "billion EUR (2021 values, published rounded figure)",
+          "claim_status": "DOCUMENTED",
+          "source": "gdv",
+          "reference_period": "July 2021",
+          "geographic_scope": "Germany (national aggregate)",
+          "licence_note": "Published estimate by GDV (German Insurance Association); cite GDV when quoting.",
+          "provider_url": "https://www.gdv.de/",
+          "method": "Published GDV insured-loss estimate for the July 2021 flood/storm event in Germany.",
+          "limitations": "National insured aggregate as published by the industry association; rounded; not allocatable below country level."
+        },
+        {
+          "label": "Deaths (documented)",
+          "value": 220,
+          "unit": "deaths (documented count, at least)",
+          "claim_status": "DOCUMENTED",
+          "source": "official_counts",
+          "reference_period": "July 2021",
+          "geographic_scope": "Affected European countries (Germany 184, Belgium 39 per official counts)",
+          "licence_note": "Official civil-protection counts as published; cite the national civil-protection authorities.",
+          "provider_url": "https://www.bbk.bund.de/",
+          "method": "Sum of officially reported deaths per country (Germany 184, Belgium 39) plus smaller counts elsewhere; reported as 'at least 220'.",
+          "limitations": "Count as documented at the time; later reviews may differ slightly."
+        }
+      ]
+    },
+    {
+      "id": "elbe_floods_2002_08",
+      "name": "August 2002 Elbe and Danube floods",
+      "hazard": "flood",
+      "reference_period": "2002-08-01 to 2002-08-31",
+      "affected_areas": [
+        {"label": "Germany", "bbox": [5.866, 47.27, 15.042, 55.058]},
+        {"label": "Austria", "bbox": [9.531, 46.372, 17.161, 49.021]},
+        {"label": "Czechia", "bbox": [12.091, 48.552, 18.859, 51.056]},
+        {"label": "Slovakia", "bbox": [16.833, 47.731, 22.566, 49.614]}
+      ],
+      "figures": [
+        {
+          "label": "Overall economic losses (Germany)",
+          "value": 11.6,
+          "unit": "billion EUR (2002 values, published rounded figure)",
+          "claim_status": "DOCUMENTED",
+          "source": "german_government_estimate",
+          "reference_period": "August 2002",
+          "geographic_scope": "Germany (national aggregate)",
+          "licence_note": "German government damage estimate as published in official reviews; cite the German authorities when quoting.",
+          "provider_url": "https://www.umweltbundesamt.de/",
+          "method": "Published German government estimate of the direct damage from the August 2002 flood (widely cited official figure).",
+          "limitations": "National aggregate in 2002 values; not allocatable below country level."
+        },
+        {
+          "label": "Insured losses (Germany)",
+          "value": 1.8,
+          "unit": "billion EUR (2002 values, published rounded figure)",
+          "claim_status": "DOCUMENTED",
+          "source": "gdv",
+          "reference_period": "August 2002",
+          "geographic_scope": "Germany (national aggregate)",
+          "licence_note": "Published estimate by GDV (German Insurance Association); cite GDV when quoting.",
+          "provider_url": "https://www.gdv.de/",
+          "method": "Published GDV insured-loss estimate for the August 2002 flood in Germany.",
+          "limitations": "National insured aggregate as published by the industry association; rounded."
+        },
+        {
+          "label": "Deaths (Germany, documented)",
+          "value": 21,
+          "unit": "deaths (documented count)",
+          "claim_status": "DOCUMENTED",
+          "source": "official_counts",
+          "reference_period": "August 2002",
+          "geographic_scope": "Germany (national count)",
+          "licence_note": "Official count as published in German reviews; cite the German authorities.",
+          "provider_url": "https://www.bbk.bund.de/",
+          "method": "Documented death count for Germany in the August 2002 flood as published in official reviews.",
+          "limitations": "Germany only; casualties in Austria, Czechia and Slovakia are not included in this figure."
+        }
+      ]
+    },
+    {
+      "id": "attica_wildfires_2018_07",
+      "name": "July 2018 Attica wildfires (Mati/Rafina, Greece)",
+      "hazard": "wildfire",
+      "reference_period": "2018-07-23 to 2018-07-26",
+      "affected_areas": [
+        {"label": "Greece", "bbox": [19.374, 34.802, 29.649, 41.749]}
+      ],
+      "figures": [
+        {
+          "label": "Deaths (documented)",
+          "value": 102,
+          "unit": "deaths (documented count)",
+          "claim_status": "DOCUMENTED",
+          "source": "official_counts",
+          "reference_period": "July 2018",
+          "geographic_scope": "Attica region, Greece",
+          "licence_note": "Official Greek count as documented; the event is tracked by the EU JRC EFFIS service.",
+          "provider_url": "https://effis.jrc.ec.europa.eu/",
+          "method": "Official Greek death count for the 23 July 2018 Mati/Rafina fire — among the deadliest wildfire events in European record.",
+          "limitations": "Count as officially documented at the time; no reliable public monetary loss figure is included for this event (declared, not estimated)."
+        }
+      ]
+    }
+  ]
+}
