@@ -1,5 +1,9 @@
 # Talaix Open Risk Engine (`tore`)
 
+[![ci](https://github.com/Motaz3d/tore/actions/workflows/ci.yml/badge.svg)](https://github.com/Motaz3d/tore/actions/workflows/ci.yml)
+[![License: EUPL-1.2](https://img.shields.io/badge/license-EUPL--1.2-blue.svg)](LICENSE)
+[![Python 3.10–3.12](https://img.shields.io/badge/python-3.10–3.12-blue.svg)](pyproject.toml)
+
 An open, reproducible analytical engine that turns open Earth-observation
 and climate data into locally computable **multi-hazard risk indicators** —
 with evidence, provenance and engine versions attached to every result.
